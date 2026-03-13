@@ -1,9 +1,9 @@
 
 ## Prototype
 
-Inheritance is passing down characteristics from a parent to a child, so a child can use that piece of code. A child can call inherited method from the parent, or it can override a specific method if adjustment is required.
+Inheritance is passing down characteristics from a parent to a child. In other words, a child can use that piece of code. A child can call an inherited method from the parent, or it can override a specific method if adjustment is required.
 
-A child can call inherited method using the  `super`  keyword, and then extend it with its own logic.
+A child can call an inherited method using the  `super`  keyword, and then extend it with its own logic.
 
 -   Example:
     
@@ -27,25 +27,30 @@ A child can call inherited method using the  `super`  keyword, and then extend i
 
 -   In some programming languages, inheritance means each instance shares methods from the class. In JavaScript, methods are inherited using the  `prototype`  property. That means every instance will share one method instead of having its own method. Every instance has a pointer (link) to the  `prototype`  property.
 -   **Benefits:**  Saving memory, adding a new method at runtime.
--   **Consequences:**  From one instance we can change the implementation of an inherited method.
--   Since one class can extend another class, and that class can extend another class, we have a  **chain of prototypes**. The last inherited object is  `Object`  and its prototype is  `null`.
+-   **Consequences:**  From one instance, we can change the implementation of an inherited method.
+-   Since one class can extend another class, and that class can extend another class, we have a  **chain of prototypes**. The last inherited object is the `Object`,  and its prototype is  `null`.
 
 ----------
 
 ### Accessing Prototype
 
--   We can access to prototype in multiple ways:
+-   We can access the prototype in multiple ways:
     
     ```
-    Object.getPrototypeOf(obj); // Any object created with or without constructor function
-    User.prototype.methodName; // Only objects created with constructor function (only class instances)
-    obj.__proto__.methodName; // Not standard way and should be avoided
+    // Any object created with or without the constructor function
+    Object.getPrototypeOf(obj);
+
+    // Only objects created with the constructor function (only class instances)
+    User.prototype.methodName;
+
+    // Not standard way and should be avoided
+    obj.__proto__.methodName;
     ```
     
 -   These two examples are the same:
     
     ```
-    Object.setPrototypeOf(Derived.prototype, Base.prototype); // For extending Derived class with Base class
+    Object.setPrototypeOf(Derived.prototype, Base.prototype);
     class Derived extends Base {}
     ```
     
@@ -80,20 +85,20 @@ A child can call inherited method using the  `super`  keyword, and then extend i
 
 ### Do Not Manually Change Constructor Prototype
 
--   **Pitfall:**  Do not change manually a constructor prototype:
+-   **Pitfall:**  Do not manually change a constructor prototype:
     
     ```
     User.prototype = Person.prototype  // Don't do this!
     ```
     
--   After this code, all existing  `User`  instances will point to old prototype, while new instances will point to the new prototype. That means, adding a new prototype function to the  `Person`  instance will not be reflected to old  `User`  instances.
--   The  `User.constructor`  for old instances will be  `User`  function (class), while for new instances it will be  `Person`.
+-   After this code, all existing  `User`  instances will point to the old prototype, while new instances will point to the new prototype. That means, adding a new prototype function to the  `Person`  instance will not be reflected the old  `User`  instances.
+-   The  `User.constructor`  for old instances will be the `User`  function (class), while for new instances it will be  the `Person`.
 
 ----------
 
 ### Legacy Code with  `Object.create()`
 
--   You may also see some legacy code using  `Object.create()`  to build the inheritance chain. However, because this reassigns the prototype property and removes the constructor property. To assign constructor back, you should do this (but avoid this approach since it's easy to forget to assign a constructor):
+-   You may also see some legacy code using  `Object.create()`  to build the inheritance chain. Because this reassigns the prototype property and removes the constructor property. To assign a constructor back, you should do this (but avoid this approach since it's easy to forget to assign a constructor):
     
     ```
     User.prototype = Object.create(Person.prototype)
@@ -105,7 +110,7 @@ A child can call inherited method using the  `super`  keyword, and then extend i
 
 ### Static vs Instance Method Inheritance
 
--   How inheritance works between classes itself (static methods), and instances (inherited methods):
+-   How inheritance works between classes (static methods), and instances (inherited methods):
     
     ```
     class Person {
@@ -119,6 +124,6 @@ A child can call inherited method using the  `super`  keyword, and then extend i
     new User().greet();         // works because User.prototype.__proto__ → Person.prototype
     ```
     
--   `User.__proto__`  →  `Person`  — for static methods inheritance (between classes itself)
+-   `User.__proto__`  →  `Person`  — for static methods inheritance (between classes)
     
--   `User.prototype.__proto__`  →  `Person.prototype`  — for instance methods inheritance
+-   `User.prototype.__proto__`  →  `Person.prototype`  — for the instance methods inheritance
